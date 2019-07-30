@@ -3,6 +3,8 @@ import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 
+import postRouter from './controllers/post/post.controller';
+
 import models, { connectDb } from './models';
 
 const app = express();
@@ -21,16 +23,9 @@ app.get('/api/me', (req, res) => {
   res.json(data);
 });
 
-app.get('/api/posts', (req, res) => {});
+// app.get('/api/posts', (req, res) => {});
 
-app.post('/api/post', (req, res) => {
-  const post = new models.PostModel({
-    creationDate: new Date(),
-    ...req.body,
-  });
-
-  post.save().then(() => res.send('saved'));
-});
+app.use('/api/post', postRouter);
 
 connectDb().then(async () => {
   app.listen(process.env.PORT, () => {

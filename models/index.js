@@ -1,14 +1,12 @@
 import mongoose from 'mongoose';
 
 import UserModel from './user.model';
-import PostModel from './post.model';
-
-console.log(process.env.DATABASE_URL);
+import Post from './post.model';
 
 const connectDb = () =>
   mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true });
 
-const models = { UserModel, PostModel };
+const models = { UserModel, Post };
 
 export { connectDb };
 

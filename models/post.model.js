@@ -7,14 +7,15 @@ const postSchema = new mongoose.Schema({
   },
   creationDate: {
     type: Date,
-    unique: false,
   },
   title: {
     type: String,
-    unique: false,
+  },
+  slug: {
+    type: String,
   },
 });
 
-const PostModel = mongoose.model('Post', postSchema);
+const Post = mongoose.model('Post', postSchema);
 
-export default PostModel;
+export default Post;
