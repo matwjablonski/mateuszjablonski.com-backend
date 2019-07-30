@@ -14,6 +14,9 @@ const postSchema = new mongoose.Schema({
   slug: {
     type: String,
   },
+  content: {
+    type: String,
+  },
 });
 
 const Post = mongoose.model('Post', postSchema);

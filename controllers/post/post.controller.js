@@ -19,6 +19,7 @@ router.post('/', (req, res) => {
       title: post.title,
       slug: post.slug,
       creationDate: post.creationDate,
+      content: post.content,
     },
     message: 'Post saved successfully.',
   };
