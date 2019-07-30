@@ -21,6 +21,17 @@ app.get('/api/me', (req, res) => {
   res.json(data);
 });
 
+app.get('/api/posts', (req, res) => {});
+
+app.post('/api/post', (req, res) => {
+  const post = new models.PostModel({
+    creationDate: new Date(),
+    ...req.body,
+  });
+
+  post.save().then(() => res.send('saved'));
+});
+
 connectDb().then(async () => {
   app.listen(process.env.PORT, () => {
     console.log('Server is running on port:', process.env.PORT);
