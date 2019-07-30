@@ -1,5 +1,9 @@
-const express = require('express');
-const cors = require('cors');
+import 'dotenv/config';
+
+import express from 'express';
+import cors from 'cors';
+
+import models, { connectDb } from './models';
 
 const app = express();
 app.use(cors());
@@ -11,12 +15,14 @@ app.get('/api/me', (req, res) => {
     avatar: {
       hash: '3c97f5609aeb498c8ba5021fad8b4d6b',
     },
-    name: 'Mateusz Jabłoński'
-  }
+    name: 'Mateusz Jabłoński',
+  };
 
   res.json(data);
-})
+});
 
-app.listen(8000, function(){
-  console.log('Server is running on port:', 8000);
+connectDb().then(async () => {
+  app.listen(process.env.PORT, () => {
+    console.log('Server is running on port:', process.env.PORT);
+  });
 });
