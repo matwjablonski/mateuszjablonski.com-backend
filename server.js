@@ -4,6 +4,7 @@ import express from 'express';
 import cors from 'cors';
 
 import postRouter from './controllers/post/post.controller';
+import postsRouter from './controllers/post/posts.controller';
 
 import models, { connectDb } from './models';
 
@@ -26,6 +27,7 @@ app.get('/api/me', (req, res) => {
 // app.get('/api/posts', (req, res) => {});
 
 app.use('/api/post', postRouter);
+app.use('/api/posts', postsRouter);
 
 connectDb().then(async () => {
   app.listen(process.env.PORT, () => {

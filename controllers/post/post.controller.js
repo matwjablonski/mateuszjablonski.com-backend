@@ -9,6 +9,11 @@ router.post('/', (req, res) => {
     creationDate: new Date(),
     id: uuid.v4(),
     slug: req.body.title.toLowerCase().replace(' ', '-'),
+    image: {
+      url: req.body.image.url,
+      source: req.body.image.source,
+      alt: req.body.image.alt
+    },
     ...req.body,
   });
 
@@ -20,6 +25,7 @@ router.post('/', (req, res) => {
       slug: post.slug,
       creationDate: post.creationDate,
       content: post.content,
+      image: post.image
     },
     message: 'Post saved successfully.',
   };
