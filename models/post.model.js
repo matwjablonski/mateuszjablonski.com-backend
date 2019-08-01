@@ -13,9 +13,17 @@ const postSchema = new mongoose.Schema({
   },
   slug: {
     type: String,
+    unique: true,
   },
   content: {
     type: String,
+  },
+  excerpt: {
+    type: String,
+  },
+  coverImage: {
+    type: Map,
+    of: String,
   },
 });
 
