@@ -1,8 +1,10 @@
-import express from 'express';
-import models from '../../models';
-import uuid from 'uuid';
+const express = require('express');
+const Models = require('../../models');
+const uuid = require('uuid');
 
 const router = express.Router();
+
+const { models } = Models;
 
 router.get('/slug/:slug', (req, res) => {
   // console.log(req);
@@ -47,4 +49,4 @@ router.post('/', (req, res) => {
     .catch(err => res.json({ status: 'error', message: err.errmsg }));
 });
 
-export default router;
+module.exports = router;

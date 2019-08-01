@@ -1,7 +1,5 @@
-import express from 'express';
-import mongoose from 'mongoose';
-import models from '../../models';
-
+const express = require('express');
+const mongoose = require('mongoose');
 const router = express.Router();
 
 router.get('/', (_, res) => {
@@ -23,4 +21,4 @@ router.get('/', (_, res) => {
   });
 });
 
-export default router;
+module.exports = router

@@ -5,7 +5,9 @@
   "repository": "git@github.com:matwjablonski/mateuszjablonski.com-backend.git",
   "author": "Mateusz Jabłoński <mat.w.jablonski@gmail.com>",
   "scripts": {
-    "start": "nodemon --exec babel-node ./server.js"
+    "start": "node ./app.js",
+    "build": "yarn install && node app.js",
+    "dev": "nodemon ./app.js"
   },
   "license": "MIT",
   "dependencies": {
