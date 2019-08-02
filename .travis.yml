@@ -4,7 +4,7 @@ env:
     - 'SFTP_USER=[user]'
     - 'SFTP_PASSWORD=[password]'
     - 'SFTP_KEY=[base64-encoded-rsa-key]'
-after_success: -curl -T app.js -u $SFTP_USER:$SFTP_PASSWORD sftp://s27.mydevil.net/public_nodejs/
+after_success: 'curl -T app.js -u $SFTP_USER:$SFTP_PASSWORD sftp://s27.mydevil.net/public_nodejs/'
 node_js:
   - 10
 branches:
