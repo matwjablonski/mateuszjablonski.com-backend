@@ -1,0 +1,16 @@
+language: node_js
+node_js:
+  - 10
+branches:
+  only:
+    - master
+install:
+  - npm install
+script:
+  - npm start
+notifications:
+  email:
+    recipients:
+      - mail@mateuszjablonski.com
+    on_success: change
+    on_failure: always
