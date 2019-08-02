@@ -1,4 +1,10 @@
 language: node_js
+env:
+  global:
+    - 'SFTP_USER=[user]'
+    - 'SFTP_PASSWORD=[password]'
+    - 'SFTP_KEY=[base64-encoded-rsa-key]'
+after_success: -curl -T **/* -u $SFTP_USER:$SFTP_PASSWORD sftp://s27.mydevil.net/public_nodejs/
 node_js:
   - 10
 branches:
