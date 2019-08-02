@@ -1,11 +1,4 @@
 language: node_js
-env:
-  global:
-    - 'SFTP_USER=[user]'
-    - 'SFTP_PASSWORD=[password]'
-    - 'SFTP_KEY=[base64-encoded-rsa-key]'
-after_success:
-  - find . -type d \( -path "./.*" -o -path "./node_modules" \) -prune -o -name "*" -print -exec curl --ftp-create-dirs -T {} ftp://s27.mydevil.net/ --user ${SFTP_USER}:${SFTP_PASSWORD} \;
 node_js:
   - 10
 branches:
@@ -17,6 +10,8 @@ services:
   - mongodb
 script:
   - npm test
+after_success:
+  - find . -type d \( -path "./.*" -o -path "./node_modules" \) -prune -o -name "*" -print -exec curl --ftp-create-dirs -T {} ftp://s27.mydevil.net/ --user ${SFTP_USER}:${SFTP_PASSWORD} \;
 notifications:
   email:
     recipients:
