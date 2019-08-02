@@ -6,8 +6,10 @@ branches:
     - master
 install:
   - npm install
+services:
+  - mongodb
 script:
-  - npm start
+  - npm test
 notifications:
   email:
     recipients:
