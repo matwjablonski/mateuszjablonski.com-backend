@@ -10,8 +10,10 @@ services:
   - mongodb
 script:
   - npm test
-after_success:
-  - find . -type d \( -path "./.*" -o -path "./node_modules" \) -prune -o -name "*" -print -exec curl --ftp-create-dirs -T {} ftp://s27.mydevil.net/public_nodejs --user ${SFTP_USER}:${SFTP_PASSWORD} \;
+deploy:
+  provider: heroku
+  api_key: $HEROKU_API_KEY
+  app: mateuszjablonski-api
 notifications:
   email:
     recipients:
