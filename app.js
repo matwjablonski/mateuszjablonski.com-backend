@@ -3,8 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const postsRouter = require('./controllers/post/posts.controller');
 const postRouter = require('./controllers/post/post.controller');
-
-// import models, { connectDb } from './models';
+const db = require('./models');
 
 const app = express();
 app.use(cors());
@@ -31,11 +30,8 @@ app.get('/', (req, res) => {
 app.use('/api/post', postRouter);
 app.use('/api/posts', postsRouter);
 
-// connectDb().then(async () => {
-//   app.listen(process.env.PORT, () => {
-//     console.log('Server is running on port:', process.env.PORT);
-//   });
-// });
-app.listen(process.env.PORT || 8000, () => {
-  console.log('Server is running on port:', process.env.PORT);
+db.connectDb().then(async () => {
+  app.listen(process.env.PORT, () => {
+    console.log('Server is running on port:', process.env.PORT);
+  });
 });
