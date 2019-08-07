@@ -1,18 +1,16 @@
 const express = require('express');
-const Models = require('../../models');
+const User = require('../../models/User');
 const uuid = require('uuid');
 
 const router = express.Router();
-const {
-  models: { User },
-} = Models;
 
 router.post('/', async (req, res) => {
   try {
     const newUser = new User({
-      name: req.body.username,
+      name: req.body.name,
       email: req.body.email,
       id: uuid.v4(),
+      password: req.body.password,
     });
 
     await newUser.save();

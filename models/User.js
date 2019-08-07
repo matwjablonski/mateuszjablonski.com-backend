@@ -34,7 +34,7 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-userSchema.pre('save', async next => {
+userSchema.pre('save', async function(next) {
   const user = this;
 
   if (user.isModified('password')) {
@@ -69,6 +69,6 @@ userSchema.statics.findByCredentials = async (email, password) => {
   return user;
 };
 
-const UserModel = mongoose.model('User', userSchema);
+const User = mongoose.model('User', userSchema);
 
-module.exports = UserModel;
+module.exports = User;
