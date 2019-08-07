@@ -13,7 +13,7 @@ app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-app.get('/', (req, res) => {
+app.get('/', (_, res) => {
   res.json(createMessageObject('success', 'API connected successfully.'));
 });
 
