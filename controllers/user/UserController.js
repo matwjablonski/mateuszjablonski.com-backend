@@ -1,6 +1,7 @@
 const express = require('express');
 const User = require('../../models/User');
 const uuid = require('uuid');
+const auth = require('../../middleware/auth');
 const createMessageObject = require('../../helpers/createMessageObjectHelper');
 
 const router = express.Router();
@@ -32,10 +33,67 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.post('/login', (req, res) => {});
+router.post('/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = await User.findByCredentials(email, password);
 
-router.get('/me', (req, res) => {});
+    if (!user) {
+      res.statusCode = 401;
+      res.json(createMessageObject('error', 'Wrong email or password.'));
+    }
 
-router.post('/logout', (req, res) => {});
+    const token = await user.generateAuthToken();
+
+    res.statusCode = 200;
+
+    const success = {
+      user: {
+        name: user.name,
+        email: user.email,
+        id: user.id,
+      },
+      token,
+    };
+
+    res.json(createMessageObject('success', 'Logged successfully.', success));
+  } catch (err) {
+    res.statusCode = 400;
+    res.json(createMessageObject('error', err));
+  }
+});
+
+router.get('/me', auth, async (req, res) => {
+  const { name, email, id } = req.user;
+  const success = {
+    name,
+    email,
+    id,
+  };
+
+  res.statusCode = 200;
+  res.json(
+    createMessageObject(
+      'success',
+      'User data downloaded successfully.',
+      success
+    )
+  );
+});
+
+router.post('/logout', auth, async (req, res) => {
+  try {
+    req.user.tokens = req.user.tokens.filter(token => {
+      return token.token != req.token;
+    });
+
+    await req.user.save();
+
+    res.json(createMessageObject('success', 'Logout successfully.'));
+  } catch (error) {
+    res.statusCode = 500;
+    res.json(createMessageObject('error', error));
+  }
+});
 
 module.exports = router;

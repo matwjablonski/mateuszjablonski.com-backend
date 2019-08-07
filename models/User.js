@@ -54,7 +54,7 @@ userSchema.pre('save', async function(next) {
 
 userSchema.methods.generateAuthToken = function() {
   const user = this;
-  console.log(user);
+
   const token = jwt.sign({ _id: user._id }, process.env.PRIVATE_TOKEN_KEY);
 
   user.tokens = user.tokens.concat({ token });
@@ -65,13 +65,13 @@ userSchema.statics.findByCredentials = async (email, password) => {
   const user = await User.findOne({ email });
 
   if (!user) {
-    throw new Error({ error: 'Invalid login credentials' });
+    throw 'User does not exist.';
   }
 
   const isPasswordMatch = await bcrypt.compare(password, user.password);
 
   if (!isPasswordMatch) {
-    throw new Error({ error: 'Invalid login credentials' });
+    throw 'Password does not match.';
   }
 
   return user;
