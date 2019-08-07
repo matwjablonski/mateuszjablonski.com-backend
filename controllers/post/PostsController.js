@@ -1,5 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const createMessageObject = require('../../helpers/createMessageObject.helper');
+
 const router = express.Router();
 
 router.get('/', (_, res) => {
@@ -16,7 +18,7 @@ router.get('/', (_, res) => {
           excerpt,
         })
       );
-      res.json(result);
+      res.json(createMessageObject('success', '', result));
     });
   });
 });

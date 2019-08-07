@@ -1,20 +1,19 @@
 const express = require('express');
-const Models = require('../../models');
+const Post = require('../../models/Post');
 const uuid = require('uuid');
+const auth = require('../../middleware/auth');
+const createMessageObject = require('../../helpers/createMessageObject.helper');
 
 const router = express.Router();
 
-const { models } = Models;
-
 router.get('/slug/:slug', (req, res) => {
-  // console.log(req);
-  models.Post.find({ slug: req.params.slug }, (err, data) => {
+  Post.find({ slug: req.params.slug }, (err, data) => {
     res.json(data.length ? data[0] : data);
   });
 });
 
-router.post('/', (req, res) => {
-  const post = new models.Post({
+router.post('/', auth, (req, res) => {
+  const post = new Post({
     creationDate: new Date(),
     id: uuid.v4(),
     slug: req.body.title.toLowerCase().replace(new RegExp(' ', 'g'), '-'),
@@ -45,8 +44,12 @@ router.post('/', (req, res) => {
 
   post
     .save()
-    .then(() => res.json(success))
-    .catch(err => res.json({ status: 'error', message: err.errmsg }));
+    .then(() =>
+      res.json(
+        createMessageObject('success', 'Post saved successfully', success)
+      )
+    )
+    .catch(err => res.json(createMessageObject('error', err.errmsg)));
 });
 
 module.exports = router;
