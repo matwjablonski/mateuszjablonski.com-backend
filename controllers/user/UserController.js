@@ -1,7 +1,7 @@
 const express = require('express');
 const User = require('../../models/User');
 const uuid = require('uuid');
-const createMessageObject = require('../../helpers/createMessageObject.helper');
+const createMessageObject = require('../../helpers/createMessageObjectHelper');
 
 const router = express.Router();
 

@@ -2,7 +2,7 @@ const express = require('express');
 const Post = require('../../models/Post');
 const uuid = require('uuid');
 const auth = require('../../middleware/auth');
-const createMessageObject = require('../../helpers/createMessageObject.helper');
+const createMessageObject = require('../../helpers/createMessageObjectHelper');
 
 const router = express.Router();
 
@@ -29,17 +29,13 @@ router.post('/', auth, (req, res) => {
   });
 
   const success = {
-    status: 'success',
-    data: {
-      id: post.id,
-      title: post.title || '',
-      slug: post.slug || '',
-      creationDate: post.creationDate,
-      content: post.content || '',
-      excerpt: post.excerpt || '',
-      coverImage: post.coverImage,
-    },
-    message: 'Post saved successfully.',
+    id: post.id,
+    title: post.title || '',
+    slug: post.slug || '',
+    creationDate: post.creationDate,
+    content: post.content || '',
+    excerpt: post.excerpt || '',
+    coverImage: post.coverImage,
   };
 
   post
