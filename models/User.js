@@ -32,6 +32,14 @@ const userSchema = new mongoose.Schema({
     type: String,
     unique: false,
   },
+  tokens: [
+    {
+      token: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
 });
 
 userSchema.pre('save', async function(next) {
@@ -44,13 +52,13 @@ userSchema.pre('save', async function(next) {
   next();
 });
 
-userSchema.methods.generateAuthToken = async () => {
+userSchema.methods.generateAuthToken = function() {
   const user = this;
-  const token = jwt.sign({ _id: user._id }, process.env.JWT_KEY);
+  console.log(user);
+  const token = jwt.sign({ _id: user._id }, process.env.PRIVATE_TOKEN_KEY);
 
   user.tokens = user.tokens.concat({ token });
-  await user.save();
-  return token;
+  return Promise.resolve(user.save().then(() => token));
 };
 
 userSchema.statics.findByCredentials = async (email, password) => {
