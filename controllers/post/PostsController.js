@@ -21,4 +21,4 @@ router.get('/', (_, res) => {
   });
 });
 
-module.exports = router
+module.exports = router;

@@ -1,8 +1,9 @@
 const dotenv = require('dotenv/config');
 const express = require('express');
 const cors = require('cors');
-const postsRouter = require('./controllers/post/posts.controller');
-const postRouter = require('./controllers/post/post.controller');
+const PostsRouter = require('./controllers/post/PostsController');
+const PostRouter = require('./controllers/post/PostController');
+const UserRouter = require('./controllers/auth/AuthController');
 const db = require('./models');
 
 const app = express();
@@ -26,9 +27,9 @@ app.get('/', (req, res) => {
 });
 
 // app.get('/api/posts', (req, res) => {});
-
-app.use('/api/post', postRouter);
-app.use('/api/posts', postsRouter);
+app.use('/api/users', UserRouter);
+app.use('/api/post', PostRouter);
+app.use('/api/posts', PostsRouter);
 
 db.connectDb().then(async () => {
   app.listen(process.env.PORT, () => {

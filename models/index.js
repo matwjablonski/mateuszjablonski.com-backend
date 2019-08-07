@@ -1,12 +1,14 @@
 const mongoose = require('mongoose');
-const UserModel = require('./user.model');
-const Post = require('./post.model');
+const User = require('./User');
+const Post = require('./Post');
 
 const connectDb = () =>
   mongoose.connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useFindAndModify: true,
   });
 
-const models = { UserModel, Post };
+const models = { User, Post };
 
 module.exports = { models, connectDb };
