@@ -12,7 +12,9 @@ router.get('/me', (_, res) => {
       'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/64855471_2367795253462662_2167997708885819392_n.jpg?_nc_cat=104&_nc_oc=AQnxsQr-bemEQiMZqPEPIgTUS51DOJequwPi1keC-01xTJOgiHz0DOKmv1nMki1XPwE&_nc_ht=scontent-waw1-1.xx&oh=882850565e666697d36d6e390d0d5eca&oe=5DD2FDF5',
     ],
     name: 'Mateusz Jabłoński',
-    description: '',
+    description:
+      'Frontend Developer with a passion. Husband in love. Gamer by choice.',
+    place: 'Poznań, Poland',
   };
 
   res.statusCode = 200;
