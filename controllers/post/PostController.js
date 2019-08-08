@@ -24,6 +24,7 @@ router.post('/', auth, (req, res) => {
       name: req.body.coverImageName,
       author: req.body.coverImageAuthor,
       authorUrl: req.body.coverImageAuthorUrl,
+      squareUrl: req.body.coverImageSquare,
     },
     ...req.body,
   });
