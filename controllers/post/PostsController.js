@@ -12,12 +12,11 @@ router.get('/', (_, res) => {
     }
     col.find({}).toArray((err, data) => {
       const result = data.map(
-        ({ id, title, content, coverImage, excerpt, creationDate, slug }) => ({
+        ({ id, title, coverImage, excerpt, creationDate, slug }) => ({
           id,
           title,
           creationDate,
           slug,
-          content,
           coverImage,
           excerpt,
         })
