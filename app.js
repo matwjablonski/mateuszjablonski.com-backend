@@ -5,6 +5,7 @@ const PostsRouter = require('./controllers/post/PostsController');
 const PostRouter = require('./controllers/post/PostController');
 const UserRouter = require('./controllers/user/UserController');
 const AuthorRouter = require('./controllers/author/AuthorController');
+const JobsRouter = require('./controllers/jobs/JobsController');
 const createMessageObject = require('./helpers/createMessageObjectHelper');
 const db = require('./db/db');
 
@@ -21,6 +22,7 @@ app.use('/api/author', AuthorRouter);
 app.use('/api/users', UserRouter);
 app.use('/api/post', PostRouter);
 app.use('/api/posts', PostsRouter);
+app.use('/api/jobs', JobsRouter);
 
 db().then(async () => {
   app.listen(process.env.PORT, () => {

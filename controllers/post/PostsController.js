@@ -34,12 +34,18 @@ router.get('/recentStories', (_, res) => {
       res.json(createMessageObject('error', err));
     }
     col.find({}).toArray((err, data) => {
-      const result = data.map(({ id, title, slug, coverImage }) => ({
-        id,
-        title,
-        slug,
-        image: coverImage.squareUrl,
-      }));
+      const result = data
+        .map(({ id, title, slug, coverImage }) => ({
+          id,
+          title,
+          slug,
+          image: coverImage.squareUrl,
+        }))
+        .find((item, itemIndex) => {
+          if (itemIndex < 5) {
+            return item;
+          }
+        });
       res.statusCode = 200;
       res.json(createMessageObject('success', '', result));
     });
