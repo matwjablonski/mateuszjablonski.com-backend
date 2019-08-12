@@ -41,10 +41,11 @@ router.get('/recentStories', (_, res) => {
           slug,
           image: coverImage.squareUrl,
         }))
-        .find((item, itemIndex) => {
+        .filter((item, itemIndex) => {
           if (itemIndex < 5) {
             return item;
           }
+          return null;
         });
       res.statusCode = 200;
       res.json(createMessageObject('success', '', result));
