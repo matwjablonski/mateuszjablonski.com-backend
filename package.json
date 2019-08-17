@@ -14,13 +14,9 @@
     "@babel/core": "^7.5.5",
     "@babel/node": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
-<<<<<<< HEAD
-    "cors": "^2.8.5",
-=======
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "cors": "2.8.5",
->>>>>>> 63362f307c3617ca4549316fa67e6fce60864f10
     "dotenv": "^8.0.0",
     "express": "4.17.0",
     "jasmine-node": "^3.0.0",
