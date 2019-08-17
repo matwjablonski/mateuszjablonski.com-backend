@@ -1,13 +1,24 @@
 const dotenv = require('dotenv/config');
-const express = require('express')
-const cors = require('cors')
-const postsRouter = require('./controllers/post/posts.controller')
+const express = require('express');
+const cors = require('cors');
+const postsRouter = require('./controllers/post/posts.controller');
 const postRouter = require('./controllers/post/post.controller');
 
 // import models, { connectDb } from './models';
 
+const whitelist = ['http://localhost:3000', 'http://mateuszjablonski.com'];
+const corsOptions = {
+  origin: function(origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+};
+
 const app = express();
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
@@ -24,7 +35,7 @@ app.get('/api/me', (req, res) => {
 
 app.get('/', (req, res) => {
   res.json('api connected');
-})
+});
 
 // app.get('/api/posts', (req, res) => {});
 
