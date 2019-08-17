@@ -1,20 +1,27 @@
-const dotenv = require('dotenv/config');
-const express = require('express');
-const cors = require('cors');
-const postsRouter = require('./controllers/post/posts.controller');
-const postRouter = require('./controllers/post/post.controller');
+const dotenv = require("dotenv/config");
+const express = require("express");
+const cors = require("cors");
+const postsRouter = require("./controllers/post/posts.controller");
+const postRouter = require("./controllers/post/post.controller");
 
 // import models, { connectDb } from './models';
+const PostsRouter = require("./controllers/post/PostsController");
+const PostRouter = require("./controllers/post/PostController");
+const UserRouter = require("./controllers/user/UserController");
+const AuthorRouter = require("./controllers/author/AuthorController");
+const JobsRouter = require("./controllers/jobs/JobsController");
+const createMessageObject = require("./helpers/createMessageObjectHelper");
+const db = require("./db/db");
 
-const whitelist = ['http://localhost:3000', 'http://mateuszjablonski.com'];
+const whitelist = ["http://localhost:3000", "http://mateuszjablonski.com"];
 const corsOptions = {
   origin: function(origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS'));
+      callback(new Error("Not allowed by CORS"));
     }
-  },
+  }
 };
 
 const app = express();
@@ -22,31 +29,24 @@ app.use(cors(corsOptions));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-app.get('/api/me', (req, res) => {
-  const data = {
-    avatar: {
-      hash: '3c97f5609aeb498c8ba5021fad8b4d6b',
-    },
-    name: 'Mateusz Jabłoński',
-  };
-
-  res.json(data);
+app.get("/", (_, res) => {
+  res.json(createMessageObject("success", "API connected successfully."));
 });
 
-app.get('/', (req, res) => {
-  res.json('api connected');
+app.get("/", (req, res) => {
+  res.json("api connected");
 });
 
-// app.get('/api/posts', (req, res) => {});
+app.use("/api/post", postRouter);
+app.use("/api/posts", postsRouter);
+app.use("/api/author", AuthorRouter);
+app.use("/api/users", UserRouter);
+app.use("/api/post", PostRouter);
+app.use("/api/posts", PostsRouter);
+app.use("/api/jobs", JobsRouter);
 
-app.use('/api/post', postRouter);
-app.use('/api/posts', postsRouter);
-
-// connectDb().then(async () => {
-//   app.listen(process.env.PORT, () => {
-//     console.log('Server is running on port:', process.env.PORT);
-//   });
-// });
-app.listen(process.env.PORT, () => {
-  console.log('Server is running on port:', process.env.PORT);
+db().then(async () => {
+  app.listen(process.env.PORT, () => {
+    console.log("Server is running on port:", process.env.PORT);
+  });
 });
