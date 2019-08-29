@@ -30,7 +30,7 @@ deploy:
     skip_cleanup: true
     script:
       rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/* -e ssh -i ./deploy_key
-      woodpecker@s27.mydevil.net:~/domains/api.mateuszjablonski.com/public_nodejs/public
+      woodpecker@s27.mydevil.net:~/domains/api.mateuszjablonski.com/public_nodejs
     on:
       branch: master
 notifications:
