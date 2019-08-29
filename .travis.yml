@@ -26,6 +26,8 @@ deploy:
   - provider: heroku
     api_key: '$HEROKU_API_KEY'
     app: mateuszjablonski-api
+    on:
+      branch: develop
   - provider: script
     skip_cleanup: true
     script:
