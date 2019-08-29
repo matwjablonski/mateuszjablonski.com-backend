@@ -25,12 +25,9 @@ const userSchema = new mongoose.Schema({
   },
   name: {
     type: String,
-    unique: false,
-    required: true,
   },
   avatar: {
     type: String,
-    unique: false,
   },
   tokens: [
     {
