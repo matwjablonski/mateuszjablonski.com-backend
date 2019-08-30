@@ -1,16 +1,14 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
+const uniqueValidator = require('mongoose-unique-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const userSchema = new mongoose.Schema({
-  id: {
-    type: String,
-    unique: true,
-  },
   email: {
     type: String,
     unique: true,
+    index: true,
     lowercase: true,
     required: true,
     validate: value => {
@@ -18,6 +16,10 @@ const userSchema = new mongoose.Schema({
         throw new Error({ error: 'Invalid Email address' });
       }
     },
+  },
+  id: {
+    type: String,
+    unique: true,
   },
   password: {
     type: String,
@@ -38,6 +40,8 @@ const userSchema = new mongoose.Schema({
     },
   ],
 });
+
+userSchema.plugin(uniqueValidator);
 
 userSchema.pre('save', async function(next) {
   const user = this;

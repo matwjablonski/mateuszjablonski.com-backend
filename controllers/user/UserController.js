@@ -7,14 +7,14 @@ const createMessageObject = require('../../helpers/createMessageObjectHelper');
 const router = express.Router();
 
 router.post('/', async (req, res) => {
-  try {
-    const newUser = new User({
-      name: req.body.name,
-      email: req.body.email,
-      id: uuid.v4(),
-      password: req.body.password,
-    });
+  const newUser = new User({
+    name: req.body.name,
+    email: req.body.email,
+    id: uuid.v4(),
+    password: req.body.password,
+  });
 
+  try {
     await newUser.save();
     const token = await newUser.generateAuthToken();
     const success = {
@@ -28,8 +28,9 @@ router.post('/', async (req, res) => {
       createMessageObject('success', 'User created successfully.', success)
     );
   } catch (err) {
+    const msg = err.errmsg || err.message;
     res.statusCode = 400;
-    res.json(createMessageObject('error', err.errmsg));
+    res.json(createMessageObject('error', msg));
   }
 });
 
