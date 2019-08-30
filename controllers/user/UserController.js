@@ -13,6 +13,7 @@ router.post('/', async (req, res) => {
     email: req.body.email,
     id: uuid.v4(),
     password: req.body.password,
+    type: 'reader',
   });
 
   try {

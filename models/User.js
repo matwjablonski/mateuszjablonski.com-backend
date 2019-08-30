@@ -17,6 +17,11 @@ const userSchema = new mongoose.Schema({
       }
     },
   },
+  userType: {
+    type: String,
+    enum: ['mentor', 'coursant', 'reader'],
+    required: true,
+  },
   id: {
     type: String,
     unique: true,
