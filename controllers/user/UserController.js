@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const User = require('../../models/User');
 const uuid = require('uuid');
 const auth = require('../../middleware/auth');
@@ -32,6 +33,43 @@ router.post('/', async (req, res) => {
     res.statusCode = 400;
     res.json(createMessageObject('error', msg));
   }
+});
+
+router.get('/', auth, async (_, res) => {
+  mongoose.connection.db.collection('users', (err, col) => {
+    if (err) {
+      res.statusCode = 400;
+      res.json(createMessageObject('error', err));
+    }
+    col.find({}).toArray((err, data) => {
+      const result = data.map(({ name, id, email, avatar }) => ({
+        name,
+        id,
+        email,
+        avatar,
+      }));
+      res.statusCode = 200;
+      res.json(createMessageObject('success', '', result));
+    });
+  });
+});
+
+router.get('/:userId', auth, (req, res) => {
+  User.find({ id: req.params.userId }, (err, data) => {
+    if (err || !data.length) {
+      res.statusCode = 400;
+      res.json(createMessageObject('error', 'User do not exist.'));
+      return;
+    }
+    const userData = {
+      name: data.length ? data[0].name : null,
+      email: data.length ? data[0].email : null,
+      id: data.length ? data[0].id : null,
+      avatar: data.length ? data[0].avatar : null,
+    };
+    res.statusCode = 200;
+    res.json(userData);
+  });
 });
 
 router.post('/login', async (req, res) => {
