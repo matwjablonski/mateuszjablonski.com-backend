@@ -20,6 +20,7 @@ const userSchema = new mongoose.Schema({
   userType: {
     type: String,
     enum: ['mentor', 'coursant', 'reader'],
+    default: 'reader',
     required: true,
   },
   id: {

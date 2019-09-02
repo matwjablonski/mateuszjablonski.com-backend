@@ -43,11 +43,12 @@ router.get('/', auth, async (_, res) => {
       res.json(createMessageObject('error', err));
     }
     col.find({}).toArray((err, data) => {
-      const result = data.map(({ name, id, email, avatar }) => ({
+      const result = data.map(({ name, id, email, avatar, userType }) => ({
         name,
         id,
         email,
         avatar,
+        userType,
       }));
       res.statusCode = 200;
       res.json(createMessageObject('success', '', result));
@@ -67,6 +68,7 @@ router.get('/:userId', auth, (req, res) => {
       email: data.length ? data[0].email : null,
       id: data.length ? data[0].id : null,
       avatar: data.length ? data[0].avatar : null,
+      userType: data.length ? data[0].userType : null,
     };
     res.statusCode = 200;
     res.json(userData);
@@ -92,6 +94,7 @@ router.post('/login', async (req, res) => {
         name: user.name,
         email: user.email,
         id: user.id,
+        userType: user.userType,
       },
       token,
     };
@@ -104,11 +107,12 @@ router.post('/login', async (req, res) => {
 });
 
 router.get('/me', auth, async (req, res) => {
-  const { name, email, id } = req.user;
+  const { name, email, id, userType } = req.user;
   const success = {
     name,
     email,
     id,
+    userType,
   };
 
   res.statusCode = 200;
