@@ -1,16 +1,14 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
+const uniqueValidator = require('mongoose-unique-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const userSchema = new mongoose.Schema({
-  id: {
-    type: String,
-    unique: true,
-  },
   email: {
     type: String,
     unique: true,
+    index: true,
     lowercase: true,
     required: true,
     validate: value => {
@@ -19,18 +17,25 @@ const userSchema = new mongoose.Schema({
       }
     },
   },
+  userType: {
+    type: String,
+    enum: ['mentor', 'coursant', 'reader'],
+    default: 'reader',
+    required: true,
+  },
+  id: {
+    type: String,
+    unique: true,
+  },
   password: {
     type: String,
     required: true,
   },
   name: {
     type: String,
-    unique: false,
-    required: true,
   },
   avatar: {
     type: String,
-    unique: false,
   },
   tokens: [
     {
@@ -41,6 +46,8 @@ const userSchema = new mongoose.Schema({
     },
   ],
 });
+
+userSchema.plugin(uniqueValidator);
 
 userSchema.pre('save', async function(next) {
   const user = this;

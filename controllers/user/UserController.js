@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const User = require('../../models/User');
 const uuid = require('uuid');
 const auth = require('../../middleware/auth');
@@ -7,14 +8,15 @@ const createMessageObject = require('../../helpers/createMessageObjectHelper');
 const router = express.Router();
 
 router.post('/', async (req, res) => {
-  try {
-    const newUser = new User({
-      name: req.body.name,
-      email: req.body.email,
-      id: uuid.v4(),
-      password: req.body.password,
-    });
+  const newUser = new User({
+    name: req.body.name,
+    email: req.body.email,
+    id: uuid.v4(),
+    password: req.body.password,
+    type: 'reader',
+  });
 
+  try {
     await newUser.save();
     const token = await newUser.generateAuthToken();
     const success = {
@@ -28,9 +30,49 @@ router.post('/', async (req, res) => {
       createMessageObject('success', 'User created successfully.', success)
     );
   } catch (err) {
+    const msg = err.errmsg || err.message;
     res.statusCode = 400;
-    res.json(createMessageObject('error', err.errmsg));
+    res.json(createMessageObject('error', msg));
   }
+});
+
+router.get('/', auth, async (_, res) => {
+  mongoose.connection.db.collection('users', (err, col) => {
+    if (err) {
+      res.statusCode = 400;
+      res.json(createMessageObject('error', err));
+    }
+    col.find({}).toArray((err, data) => {
+      const result = data.map(({ name, id, email, avatar, userType }) => ({
+        name,
+        id,
+        email,
+        avatar,
+        userType,
+      }));
+      res.statusCode = 200;
+      res.json(createMessageObject('success', '', result));
+    });
+  });
+});
+
+router.get('/:userId', auth, (req, res) => {
+  User.find({ id: req.params.userId }, (err, data) => {
+    if (err || !data.length) {
+      res.statusCode = 400;
+      res.json(createMessageObject('error', 'User do not exist.'));
+      return;
+    }
+    const userData = {
+      name: data.length ? data[0].name : null,
+      email: data.length ? data[0].email : null,
+      id: data.length ? data[0].id : null,
+      avatar: data.length ? data[0].avatar : null,
+      userType: data.length ? data[0].userType : null,
+    };
+    res.statusCode = 200;
+    res.json(userData);
+  });
 });
 
 router.post('/login', async (req, res) => {
@@ -52,6 +94,7 @@ router.post('/login', async (req, res) => {
         name: user.name,
         email: user.email,
         id: user.id,
+        userType: user.userType,
       },
       token,
     };
@@ -64,11 +107,12 @@ router.post('/login', async (req, res) => {
 });
 
 router.get('/me', auth, async (req, res) => {
-  const { name, email, id } = req.user;
+  const { name, email, id, userType } = req.user;
   const success = {
     name,
     email,
     id,
+    userType,
   };
 
   res.statusCode = 200;
