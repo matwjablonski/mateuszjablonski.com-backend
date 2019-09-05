@@ -56,7 +56,26 @@ router.get('/', auth, async (_, res) => {
   });
 });
 
-router.get('/:userId', auth, (req, res) => {
+router.get('/me', auth, (req, res) => {
+  const { name, email, id, userType } = req.user;
+  const success = {
+    name,
+    email,
+    id,
+    userType,
+  };
+
+  res.statusCode = 200;
+  res.json(
+    createMessageObject(
+      'success',
+      'User data downloaded successfully.',
+      success
+    )
+  );
+});
+
+router.get('/userId/:userId', auth, (req, res) => {
   User.find({ id: req.params.userId }, (err, data) => {
     if (err || !data.length) {
       res.statusCode = 400;
@@ -104,25 +123,6 @@ router.post('/login', async (req, res) => {
     res.statusCode = 400;
     res.json(createMessageObject('error', err));
   }
-});
-
-router.get('/me', auth, async (req, res) => {
-  const { name, email, id, userType } = req.user;
-  const success = {
-    name,
-    email,
-    id,
-    userType,
-  };
-
-  res.statusCode = 200;
-  res.json(
-    createMessageObject(
-      'success',
-      'User data downloaded successfully.',
-      success
-    )
-  );
 });
 
 router.post('/logout', auth, async (req, res) => {

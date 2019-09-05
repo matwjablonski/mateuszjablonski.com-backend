@@ -11,16 +11,17 @@ router.get('/', (_, res) => {
       res.json(createMessageObject('error', err));
     }
     col.find({}).toArray((err, data) => {
-      const result = data.map(
-        ({ id, title, coverImage, excerpt, creationDate, slug }) => ({
+      const result = data
+        .map(({ id, title, coverImage, excerpt, creationDate, slug }) => ({
           id,
           title,
           creationDate,
           slug,
           coverImage,
           excerpt,
-        })
-      );
+        }))
+        .sort((a, b) => (a.creationDate > b.creationDate ? 0 : 1));
+
       res.statusCode = 200;
       res.json(createMessageObject('success', '', result));
     });
@@ -46,7 +47,8 @@ router.get('/recentStories', (_, res) => {
             return item;
           }
           return null;
-        });
+        })
+        .sort((a, b) => (a.creationDate > b.creationDate ? 0 : 1));
       res.statusCode = 200;
       res.json(createMessageObject('success', '', result));
     });
