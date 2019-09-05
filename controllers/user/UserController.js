@@ -57,7 +57,6 @@ router.get('/', auth, async (_, res) => {
 });
 
 router.get('/me', auth, (req, res) => {
-  console.log('me');
   const { name, email, id, userType } = req.user;
   const success = {
     name,
