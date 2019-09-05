@@ -47,7 +47,8 @@ router.get('/recentStories', (_, res) => {
             return item;
           }
           return null;
-        });
+        })
+        .sort((a, b) => (a.creationDate > b.creationDate ? 0 : 1));
       res.statusCode = 200;
       res.json(createMessageObject('success', '', result));
     });
