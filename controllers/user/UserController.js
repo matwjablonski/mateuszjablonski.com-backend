@@ -68,7 +68,7 @@ router.get('/me', auth, (req, res) => {
     email,
     id,
     userType,
-    permissions,
+    permissions: permissions || [],
   };
 
   res.statusCode = 200;
