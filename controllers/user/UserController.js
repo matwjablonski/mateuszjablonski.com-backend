@@ -13,6 +13,7 @@ router.post('/', async (req, res) => {
     email: req.body.email,
     id: uuid.v4(),
     password: req.body.password,
+    permissions: [],
     type: 'reader',
   });
 
@@ -23,6 +24,7 @@ router.post('/', async (req, res) => {
       id: newUser.id,
       email: newUser.email,
       name: newUser.name,
+      permissions: newUser.permissions || [],
       token: token,
     };
     res.statusCode = 201;
@@ -43,13 +45,16 @@ router.get('/', auth, async (_, res) => {
       res.json(createMessageObject('error', err));
     }
     col.find({}).toArray((err, data) => {
-      const result = data.map(({ name, id, email, avatar, userType }) => ({
-        name,
-        id,
-        email,
-        avatar,
-        userType,
-      }));
+      const result = data.map(
+        ({ name, id, email, avatar, userType, permissions }) => ({
+          name,
+          id,
+          email,
+          avatar,
+          userType,
+          permissions,
+        })
+      );
       res.statusCode = 200;
       res.json(createMessageObject('success', '', result));
     });
@@ -57,12 +62,13 @@ router.get('/', auth, async (_, res) => {
 });
 
 router.get('/me', auth, (req, res) => {
-  const { name, email, id, userType } = req.user;
+  const { name, email, id, userType, permissions } = req.user;
   const success = {
     name,
     email,
     id,
     userType,
+    permissions: permissions || [],
   };
 
   res.statusCode = 200;
@@ -114,6 +120,7 @@ router.post('/login', async (req, res) => {
         email: user.email,
         id: user.id,
         userType: user.userType,
+        permissions: user.permissions || [],
       },
       token,
     };
