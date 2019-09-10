@@ -15,7 +15,7 @@ const glossarySchema = new mongoose.Schema({
     type: Map,
     of: String,
   },
-  desciption: {
+  description: {
     type: String,
   },
   categories: {
