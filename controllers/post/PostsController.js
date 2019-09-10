@@ -20,7 +20,18 @@ router.get('/', (_, res) => {
           coverImage,
           excerpt,
         }))
-        .sort((a, b) => (a.creationDate > b.creationDate ? 0 : 1));
+        .sort((a, b) => {
+          const dateA = new Date(a);
+          const dateB = new Date(b);
+
+          if (dateA > dateB) {
+            return 1;
+          }
+          if (dateA < dateB) {
+            return -1;
+          }
+          return 0;
+        });
 
       res.statusCode = 200;
       res.json(createMessageObject('success', '', result));
