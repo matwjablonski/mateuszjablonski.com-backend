@@ -3,6 +3,7 @@ const Post = require('../../models/Post');
 const uuid = require('uuid');
 const auth = require('../../middleware/auth');
 const createMessageObject = require('../../helpers/createMessageObjectHelper');
+const createSlug = require('../../helpers/createPostSlugHelper');
 
 const router = express.Router();
 
@@ -16,7 +17,7 @@ router.post('/', auth, (req, res) => {
   const post = new Post({
     creationDate: new Date(),
     id: uuid.v4(),
-    slug: req.body.title.toLowerCase().replace(new RegExp(' ', 'g'), '-'),
+    slug: createSlug(req.body.title),
     coverImage: {
       url: req.body.coverImageUrl,
       source: req.body.coverImageSource,
