@@ -9,11 +9,12 @@ const Glossary = require('../../models/Glossary');
 const router = express.Router();
 
 router.get('/', (_, res) => {
-  mongoose.connection.db.collection('posts', (err, col) => {
+  mongoose.connection.db.collection('glossaries', (err, col) => {
     if (err) {
       res.statusCode = 400;
       res.json(createMessageObject('error', err));
     }
+
     col.find({}).toArray((_, data) => {
       const result = data
         .map(({ id, entry, fullName, description, similar, categories }) => ({
@@ -33,10 +34,10 @@ router.get('/', (_, res) => {
           }
           return 0;
         });
-    });
 
-    res.statusCode = 200;
-    res.json(createMessageObject('success', '', result));
+      res.statusCode = 200;
+      res.json(createMessageObject('success', '', result));
+    });
   });
 });
 
