@@ -11,10 +11,12 @@ router.post('/', async (req, res) => {
   const newUser = new User({
     name: req.body.name,
     email: req.body.email,
+    phoneNumber: req.body.phoneNumber,
     id: uuid.v4(),
     password: req.body.password,
     permissions: [],
     type: 'reader',
+    dateOfBirth: new Date(req.body.dateOfBirth),
   });
 
   try {
@@ -26,6 +28,8 @@ router.post('/', async (req, res) => {
       name: newUser.name,
       permissions: newUser.permissions || [],
       token: token,
+      dateOfBirth: newUser.dateOfBirth,
+      phoneNumber: newUser.phoneNumber,
     };
     res.statusCode = 201;
     res.json(
@@ -62,12 +66,13 @@ router.get('/', auth, async (_, res) => {
 });
 
 router.get('/me', auth, (req, res) => {
-  const { name, email, id, userType, permissions } = req.user;
+  const { name, email, id, userType, permissions, dateOfBirth } = req.user;
   const success = {
     name,
     email,
     id,
     userType,
+    dateOfBirth,
     permissions: permissions || [],
   };
 
@@ -88,12 +93,16 @@ router.get('/userId/:userId', auth, (req, res) => {
       res.json(createMessageObject('error', 'User do not exist.'));
       return;
     }
+
     const userData = {
       name: data.length ? data[0].name : null,
       email: data.length ? data[0].email : null,
       id: data.length ? data[0].id : null,
       avatar: data.length ? data[0].avatar : null,
       userType: data.length ? data[0].userType : null,
+      dateOfBirth: data.length ? data[0].dateOfBirth : null,
+      phoneNumber: data.length ? data[0].phoneNumber : null,
+      permissions: data.length ? data[0].permissions : null,
     };
     res.statusCode = 200;
     res.json(userData);
