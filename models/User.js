@@ -17,6 +17,9 @@ const userSchema = new mongoose.Schema({
       }
     },
   },
+  phoneNumber: {
+    type: String,
+  },
   userType: {
     type: String,
     enum: ['mentor', 'coursant', 'reader'],
@@ -37,18 +40,22 @@ const userSchema = new mongoose.Schema({
   avatar: {
     type: String,
   },
-  permissions: {
-    type: Map,
-    enum: [
-      'CAN_CREATE_POST',
-      'CAN_EDIT_POST',
-      'CAN_REMOVE_POST',
-      'CAN_ADD_USER',
-      'CAN_EDIT_USER',
-      'CAN_REMOVE_USER',
-    ],
-    of: String,
+  dateOfBirth: {
+    type: Date,
   },
+  permissions: [
+    {
+      type: String,
+      enum: [
+        'CAN_CREATE_POST',
+        'CAN_EDIT_POST',
+        'CAN_REMOVE_POST',
+        'CAN_ADD_USER',
+        'CAN_EDIT_USER',
+        'CAN_REMOVE_USER',
+      ],
+    },
+  ],
   tokens: [
     {
       token: {
