@@ -28,7 +28,6 @@ const userSchema = new mongoose.Schema({
   },
   id: {
     type: String,
-    unique: true,
   },
   password: {
     type: String,
@@ -53,9 +52,11 @@ const userSchema = new mongoose.Schema({
         'CAN_ADD_USER',
         'CAN_EDIT_USER',
         'CAN_REMOVE_USER',
+        'CAN_CREATE_GLOSSARY',
       ],
     },
   ],
+  courses: [{ type: String }],
   tokens: [
     {
       token: {

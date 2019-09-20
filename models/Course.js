@@ -8,6 +8,28 @@ const courseSchema = new mongoose.Schema({
   title: {
     type: String,
   },
+  userId: {
+    type: String,
+  },
+  meetings: {
+    contracted: {
+      type: Number,
+    },
+    completed: [
+      {
+        date: {
+          type: Date,
+        },
+        description: {
+          type: String,
+        },
+      },
+    ],
+  },
+  modules: {},
+  courseType: {
+    type: String,
+  },
 });
 
 const Course = mongoose.model('Course', courseSchema);

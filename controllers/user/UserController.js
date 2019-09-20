@@ -66,7 +66,15 @@ router.get('/', auth, async (_, res) => {
 });
 
 router.get('/me', auth, (req, res) => {
-  const { name, email, id, userType, permissions, dateOfBirth } = req.user;
+  const {
+    name,
+    email,
+    id,
+    userType,
+    permissions,
+    courses,
+    dateOfBirth,
+  } = req.user;
   const success = {
     name,
     email,
@@ -74,6 +82,7 @@ router.get('/me', auth, (req, res) => {
     userType,
     dateOfBirth,
     permissions: permissions || [],
+    courses: userType === 'coursant' ? courses : [],
   };
 
   res.statusCode = 200;
