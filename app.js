@@ -12,6 +12,7 @@ const JobsRouter = require('./controllers/jobs/JobsController');
 const PageRouter = require('./controllers/page/PageController');
 const UploadRouter = require('./controllers/upload/UploadController');
 const GlossaryRouter = require('./controllers/glossary/GlossaryController');
+const CourseRouter = require('./controllers/course/CourseController');
 const createMessageObject = require('./helpers/createMessageObjectHelper');
 const db = require('./db/db');
 
@@ -36,6 +37,7 @@ app.use('/api/content', PageRouter);
 app.use('/api/jobs', JobsRouter);
 app.use('/api/glossary', GlossaryRouter);
 app.use('/api/uploads', UploadRouter);
+app.use('/api/course', CourseRouter);
 
 app.use(
   fileUpload({

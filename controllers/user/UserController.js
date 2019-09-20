@@ -16,7 +16,7 @@ router.post('/', async (req, res) => {
     password: req.body.password,
     permissions: [],
     type: 'reader',
-    dateOfBirth: new Date(req.body.dateOfBirth),
+    dateOfBirth: req.body.dateOfBirth ? new Date(req.body.dateOfBirth) : null,
   });
 
   try {
