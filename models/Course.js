@@ -15,6 +15,9 @@ const courseSchema = new mongoose.Schema({
     contracted: {
       type: Number,
     },
+    nextMeeting: {
+      type: Date,
+    },
     completed: [
       {
         date: {

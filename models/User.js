@@ -56,7 +56,7 @@ const userSchema = new mongoose.Schema({
       ],
     },
   ],
-  courses: [{ type: String }],
+  course: { type: String },
   tokens: [
     {
       token: {

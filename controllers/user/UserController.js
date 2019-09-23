@@ -65,6 +65,29 @@ router.get('/', auth, async (_, res) => {
   });
 });
 
+router.get('/coursants', auth, async (_, res) => {
+  mongoose.connection.db.collection('users', (err, col) => {
+    if (err) {
+      res.statusCode = 400;
+      res.json(createMessageObject('error', err));
+    }
+    col.find({ userType: 'coursant' }).toArray((err, data) => {
+      const result = data.map(
+        ({ name, id, email, avatar, userType, permissions }) => ({
+          name,
+          id,
+          email,
+          avatar,
+          userType,
+          permissions,
+        })
+      );
+      res.statusCode = 200;
+      res.json(createMessageObject('success', '', result));
+    });
+  });
+});
+
 router.get('/me', auth, (req, res) => {
   const {
     name,
@@ -72,7 +95,7 @@ router.get('/me', auth, (req, res) => {
     id,
     userType,
     permissions,
-    courses,
+    course,
     dateOfBirth,
   } = req.user;
   const success = {
@@ -82,7 +105,7 @@ router.get('/me', auth, (req, res) => {
     userType,
     dateOfBirth,
     permissions: permissions || [],
-    courses: userType === 'coursant' ? courses : [],
+    course: userType === 'coursant' ? course : null,
   };
 
   res.statusCode = 200;
@@ -112,6 +135,7 @@ router.get('/userId/:userId', auth, (req, res) => {
       dateOfBirth: data.length ? data[0].dateOfBirth : null,
       phoneNumber: data.length ? data[0].phoneNumber : null,
       permissions: data.length ? data[0].permissions : null,
+      course: data.length ? data[0].course : null,
     };
     res.statusCode = 200;
     res.json(userData);

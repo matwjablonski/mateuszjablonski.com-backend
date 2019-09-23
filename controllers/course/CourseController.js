@@ -50,4 +50,24 @@ router.post('/type/:type', (req, res) => {
     .catch(err => res.json(createMessageObject('error', err.errmsg)));
 });
 
+router.put('/newMeeting/:id', auth, async (req, res) => {
+  Course.findOne({ id: req.params.id }, (err, data) => {
+    data.meetings.nextMeeting = new Date(
+      `${req.body.meetingDate} ${req.body.meetingTime}`
+    );
+    data
+      .save()
+      .then(() => {
+        res.json(
+          createMessageObject(
+            'success',
+            'New meeting add successfully',
+            success
+          )
+        );
+      })
+      .catch(err => res.json(createMessageObject('error', err.errmsg)));
+  });
+});
+
 module.exports = router;
