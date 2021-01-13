@@ -40,6 +40,8 @@ router.post('/', auth, (req, res) => {
     coverImage: post.coverImage,
   };
 
+  console.log(post);
+
   post
     .save()
     .then(() =>
